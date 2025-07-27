@@ -54,7 +54,6 @@
   "peerDependencies": {
     "nock": "^13.0.0"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.14.10",
     "@typescript-eslint/eslint-plugin": "^7.16.0",
@@ -65,20 +64,11 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.7",
+    "lint-staged": "^15.5.2",
     "nock": "^13.5.4",
     "prettier": "^3.3.2",
     "tslib": "^2.6.3",
     "typescript": "^5.5.3",
     "vitest": "^2.0.2"
-  },
-  "lint-staged": {
-    "src/**/*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "__tests__/**/*.ts": [
-      "prettier --write"
-    ]
   }
 }
