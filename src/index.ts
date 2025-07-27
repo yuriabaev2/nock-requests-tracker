@@ -6,7 +6,7 @@ import type { RequestInfo, NockInterceptor, TrackedRequest, RequestTracker } fro
 type NockScope = ReturnType<typeof nock>;
 // type NockInterceptorInstance = ReturnType<NockScope[keyof NockScope]>;
 
-const originalNock = nock; // just           checking that nock is imported correctly
+const originalNock = nock; // just checking that nock is imported correctly
 
 function parseUrl(url: string): { hostname: string; port?: string; protocol: string } {
   const parsedUrl = new URL(url);
