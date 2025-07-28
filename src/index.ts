@@ -43,7 +43,7 @@ function createTrackedNock(baseUrl: string): NockScope & { tracker: RequestTrack
             'replied',
             (req: {
               path: string;
-              query?: unknown;
+              query?: Record<string, string | string[]>;
               headers?: Record<string, string>;
               body?: unknown;
             }) => {
@@ -51,7 +51,7 @@ function createTrackedNock(baseUrl: string): NockScope & { tracker: RequestTrack
                 method: method.toUpperCase(),
                 url: `${fullHost}${req.path}`,
                 path: req.path,
-                query: req.query || {},
+                query: req.query,
                 headers: req.headers ?? {},
                 body: req.body,
                 timestamp: new Date(),

@@ -2,8 +2,8 @@ export interface RequestInfo {
   method: string;
   url: string;
   path: string;
-  query?: Record<string, string | string[]>;
-  headers?: Record<string, string | string[]>;
+  query?: Record<string, string | string[]> | undefined;
+  headers?: Record<string, string | string[]> | undefined;
   body?: unknown;
   timestamp: Date;
 }
