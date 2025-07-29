@@ -1,6 +1,6 @@
 {
   "name": "nock-requests-tracker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A modern TypeScript package for tracking nock HTTP requests with minimal integration requirements",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,7 +42,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/yuriabaev2/nock-requests-tracker"
   },
   "bugs": {
     "url": ""

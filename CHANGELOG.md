@@ -1,5 +1,11 @@
 # nock-requests-tracker
 
+## 1.0.2
+
+### Patch Changes
+
+- some change
+
 ## 1.0.1
 
 ### Patch Changes
