@@ -4,7 +4,7 @@ import { requestTracker } from './tracker.js';
 import type { RequestInfo, NockInterceptor, TrackedRequest, RequestTracker } from './types.js';
 
 type NockScope = ReturnType<typeof nock>;
-// type  NockInterceptorInstance = ReturnType<NockScope[keyof NockScope]>;
+// type s  NockInterceptorInstance = ReturnType<NockScope[keyof NockScope]>;
 
 const originalNock = nock; // just checking that nock is imported correctly
 
