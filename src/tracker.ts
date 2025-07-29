@@ -25,9 +25,7 @@ class NockRequestTracker implements RequestTracker {
   }
 
   getRequestsForMethod(method: string): TrackedRequest[] {
-    return this.requests.filter(req => 
-      req.method.toLowerCase() === method.toLowerCase()
-    );
+    return this.requests.filter(req => req.method.toLowerCase() === method.toLowerCase());
   }
 }
 

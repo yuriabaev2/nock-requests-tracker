@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [18] #${{ github.event_name == 'pull_request' && fromJSON('[20]') || fromJSON('[18, 20, 22]') }}
+        node-version: [18, 20, 22]
 
     steps:
       - name: Checkout
@@ -31,12 +31,7 @@ jobs:
       - run: npm config get registry
 
       - name: Install dependencies
-        run: npm install --frozen-lockfile
-
-      - name: Print npm log (if exists)
-        if: always()
-        run: |
-          find /home/runner/.npm/_logs -type f -name "*.log" -exec cat {} \;
+        run: npm ci
 
       - name: Lint
         run: npm run lint
