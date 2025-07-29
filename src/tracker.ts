@@ -17,10 +17,14 @@ class NockRequestTracker implements RequestTracker {
 
   getRequestsForPath(path: string): TrackedRequest[] {
     return this.requests.filter(req => {
-      if (typeof req.interceptor.path === 'string') {
-        return req.interceptor.path === path || req.path === path;
+      const pattern = req.interceptor.path;
+      if (typeof pattern === 'string') {
+        return pattern === path || pattern.startsWith(path);
       }
-      return req.interceptor.path.test(req.path);
+      if (pattern instanceof RegExp) {
+        return pattern.test(path);
+      }
+      return false;
     });
   }
 

@@ -105,10 +105,10 @@ describe('NockRequestTracker', () => {
       requests.forEach(req => tracker.addRequest(req));
     });
 
-    it('should filter requests by exact path match', () => {
+    it('should filter requests by path pattern', () => {
       const requests = tracker.getRequestsForPath('/users');
       expect(requests).toHaveLength(1);
-      expect(requests[0]?.path).toBe('/users');
+      expect(requests.some(r => r.path === '/users')).toBe(true);
     });
 
     it('should filter requests by regex path match', () => {

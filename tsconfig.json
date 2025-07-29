@@ -23,7 +23,9 @@
     "declarationMap": true,
     "sourceMap": true,
     "removeComments": false,
-    "importHelpers": true
+    "importHelpers": true,
+    "types": ["vitest"] // or "jest" depending on your test runner
+
   },
   "include": [
     "src/**/*"
