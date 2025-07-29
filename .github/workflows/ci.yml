@@ -33,6 +33,11 @@ jobs:
       - name: Install dependencies
         run: npm install --frozen-lockfile
 
+      - name: Print npm log (if exists)
+        if: always()
+        run: |
+          find /home/runner/.npm/_logs -type f -name "*.log" -exec cat {} \;
+
       - name: Lint
         run: npm run lint
 
