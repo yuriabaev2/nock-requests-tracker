@@ -89,7 +89,7 @@ describe('nock-requests-tracker', () => {
 
   it('should track requests with different HTTP methods', async () => {
     const methods = ['get', 'post', 'put', 'patch', 'delete'] as const;
-    const scopes: ReturnType<typeof nock>[] = [];
+    const scopes = [];
 
     for (const method of methods) {
       const scope = nock('https://api.example.com')[method]('/test').reply(200, { success: true });
