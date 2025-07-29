@@ -1,5 +1,6 @@
 import { NockRequestTracker } from '../src/tracker.js';
-import type { TrackedRequest } from '../src/types.js';
+import type { TrackedRequest } from '../src';
+import { describe, it, expect, beforeEach } from 'vitest';
 
 describe('NockRequestTracker', () => {
   let tracker: NockRequestTracker;

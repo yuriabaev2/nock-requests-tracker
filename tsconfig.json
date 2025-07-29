@@ -24,15 +24,15 @@
     "sourceMap": true,
     "removeComments": false,
     "importHelpers": true,
-    "types": ["vitest"] // or "jest" depending on your test runner
-
+    "types": ["vitest"]
   },
   "include": [
-    "src/**/*"
+    "src",
+    "tests",
+    "**/*.test.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "__tests__"
+    "dist"
   ]
 }

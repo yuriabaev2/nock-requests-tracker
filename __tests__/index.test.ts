@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { nock, requestTracker } from '../src/index.js';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 describe('nock-requests-tracker', () => {
   beforeEach(() => {
