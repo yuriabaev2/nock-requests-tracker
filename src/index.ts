@@ -51,7 +51,7 @@ function createTrackedNock(baseUrl: string): NockScope & { tracker: RequestTrack
                 method: method.toUpperCase(),
                 url: `${fullHost}${req.path}`,
                 path: req.path,
-                query: req.query,
+                query: Object.fromEntries(new URL(req.path, fullHost).searchParams),
                 headers: req.headers ?? {},
                 body: req.body,
                 timestamp: new Date(),
