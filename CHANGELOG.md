@@ -1,3 +1,14 @@
+## 1.0.0 (2025-07-30)
+
+### Features
+
+* Merge pull request [#3](https://github.com/yuriabaev2/nock-requests-tracker/issues/3) from yuriabaev2/add-release ([a554c93](https://github.com/yuriabaev2/nock-requests-tracker/commit/a554c93abddd68b24e79aab417ba062156b77762))
+
+### Bug Fixes
+
+* add semantic release ([038b927](https://github.com/yuriabaev2/nock-requests-tracker/commit/038b927ca8447bc3a45089eca5dc5127c0860e46))
+* add semantic release ([355cd6d](https://github.com/yuriabaev2/nock-requests-tracker/commit/355cd6daab4f7285c6292bfbd23ca787a5ab33ac))
+
 # nock-requests-tracker
 
 ## 1.0.4
