@@ -18,7 +18,7 @@ A modern TypeScript package for tracking nock HTTP requests with minimal integra
 ## 🚀 Installation
 
 ```bash
-npm install nock-requests-tracker
+npm install -D nock-requests-tracker
 # or
 yarn add nock-requests-tracker
 # or  
