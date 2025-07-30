@@ -12,7 +12,7 @@ A modern TypeScript package for tracking nock HTTP requests with minimal integra
 - **📊 Detailed Tracking** - Capture method, URL, headers, body, query parameters, and timestamps
 - **🎯 Smart Filtering** - Filter requests by path, HTTP method, or custom criteria
 - **💪 TypeScript First** - Full type safety with comprehensive type definitions
-- **🚀 Zero Dependencies** - Lightweight with no runtime dependencies
+- **🚀 Lightweight** - No additional runtime dependencies beyond nock
 - **🧪 Vitest Ready** - Works perfectly with modern testing frameworks
 
 ## 🚀 Installation
