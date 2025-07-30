@@ -7,10 +7,17 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          TAG=$(git describe --tags --abbrev=0)
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ steps.get_tag.outputs.tag }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
