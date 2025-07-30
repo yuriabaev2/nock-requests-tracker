@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/yuriabaev2/nock-requests-tracker/compare/v1.0.0...v1.0.1) (2025-07-30)
+
+### Bug Fixes
+
+* change readme ([65245a3](https://github.com/yuriabaev2/nock-requests-tracker/commit/65245a3c99476ca807ad966d09f07da8c26e109f))
+
 ## 1.0.0 (2025-07-30)
 
 ### Features
