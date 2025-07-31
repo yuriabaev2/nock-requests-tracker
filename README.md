@@ -18,11 +18,11 @@ A modern TypeScript package for tracking [nock](https://github.com/nock/nock) HT
 ## 🚀 Installation
 
 ```bash
-npm install -D nock-requests-tracker
+npm install --save-dev nock-requests-tracker
 # or
-yarn add nock-requests-tracker
+yarn add --dev nock-requests-tracker
 # or  
-pnpm add nock-requests-tracker
+pnpm add --save-dev nock-requests-tracker
 ```
 
 **Peer dependency:** Requires `nock ^13.0.0`
