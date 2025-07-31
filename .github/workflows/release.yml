@@ -4,16 +4,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  check-ci:
+  check-ci-status:
     runs-on: ubuntu-latest
     outputs:
-      ci-passed: ${{ steps.check.outputs.result }}
+      can-release: ${{ steps.check.outputs.result }}
     steps:
-      - name: Check if CI passed on main
+      - name: Check CI status on main
         id: check
         uses: actions/github-script@v7
         with:
           script: |
+            if (context.ref !== 'refs/heads/main') {
+              core.setFailed('Release can only be run on main branch');
+              return false;
+            }
+            
             const { data: runs } = await github.rest.actions.listWorkflowRuns({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -30,16 +35,17 @@ jobs:
             
             const latestRun = runs.workflow_runs[0];
             if (latestRun.conclusion !== 'success') {
-              core.setFailed(`Latest CI run failed with conclusion: ${latestRun.conclusion}`);
+              core.setFailed(`Latest CI run on main failed: ${latestRun.conclusion}`);
               return false;
             }
             
+            console.log(`Latest CI run passed: ${latestRun.html_url}`);
             return true;
 
   release:
     runs-on: ubuntu-latest
-    needs: check-ci
-    if: ${{ needs.check-ci.outputs.ci-passed == 'true' }}
+    needs: check-ci-status
+    if: ${{ needs.check-ci-status.outputs.can-release == 'true' }}
     permissions:
       contents: write
       issues: write
