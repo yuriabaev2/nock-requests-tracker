@@ -1,3 +1,9 @@
+## [1.0.9](https://github.com/yuriabaev2/nock-requests-tracker/compare/v1.0.8...v1.0.9) (2025-07-31)
+
+### Bug Fixes
+
+* change publish checkout tags ([76f7b61](https://github.com/yuriabaev2/nock-requests-tracker/commit/76f7b614ad0794bfaa2c1a6633314a6836dc0a28))
+
 ## [1.0.8](https://github.com/yuriabaev2/nock-requests-tracker/compare/v1.0.7...v1.0.8) (2025-07-31)
 
 ### Bug Fixes
