@@ -4,74 +4,104 @@ import { requestTracker } from './tracker.js';
 import type { RequestInfo, NockInterceptor, TrackedRequest, RequestTracker } from './types.js';
 
 type NockScope = ReturnType<typeof nock>;
-// type s  NockInterceptorInstance = ReturnType<NockScope[keyof NockScope]>;
+type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete' | 'head' | 'options';
+type NockRepliedEvent = {
+  path: string;
+  query?: Record<string, string | string[]>;
+  headers?: Record<string, string>;
+  body?: unknown;
+};
 
-const originalNock = nock; // just checking that nock is imported correctly
+const originalNock = nock;
 
 function parseUrl(url: string): { hostname: string; port?: string; protocol: string } {
-  const parsedUrl = new URL(url);
-  return {
-    hostname: parsedUrl.hostname,
-    port: parsedUrl.port,
-    protocol: parsedUrl.protocol,
-  };
+  try {
+    const parsedUrl = new URL(url);
+    const result: { hostname: string; port?: string; protocol: string } = {
+      hostname: parsedUrl.hostname,
+      protocol: parsedUrl.protocol,
+    };
+
+    if (parsedUrl.port) {
+      result.port = parsedUrl.port;
+    }
+
+    return result;
+  } catch (error) {
+    throw new Error(
+      `Invalid URL provided: ${url}. Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+    );
+  }
+}
+
+function buildFullHost(protocol: string, hostname: string, port?: string): string {
+  return `${protocol}//${hostname}${port ? `:${port}` : ''}`;
+}
+
+function extractQueryParams(path: string, fullHost: string): Record<string, string> {
+  try {
+    return Object.fromEntries(new URL(path, fullHost).searchParams);
+  } catch {
+    // If URL parsing fails, return empty object
+    return {};
+  }
 }
 function createTrackedNock(baseUrl: string): NockScope & { tracker: RequestTracker } {
   const scope = originalNock(baseUrl);
   const { hostname, port, protocol } = parseUrl(baseUrl);
-  const fullHost = `${protocol}//${hostname}${port ? `:${port}` : ''}`;
+  const fullHost = buildFullHost(protocol, hostname, port);
 
-  const originalMethods = ['get', 'post', 'put', 'patch', 'delete', 'head', 'options'] as const;
+  const httpMethods: readonly HttpMethod[] = [
+    'get',
+    'post',
+    'put',
+    'patch',
+    'delete',
+    'head',
+    'options',
+  ] as const;
 
-  originalMethods.forEach(method => {
+  httpMethods.forEach(method => {
     const originalMethod = scope[method];
     if (typeof originalMethod === 'function') {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/explicit-function-return-type
-      (scope as unknown as any)[method] = function (path: string | RegExp, body?: unknown) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const interceptor = originalMethod.call(this, path, body);
-
+      // Using any types here due to nock's complex and changing internal types
+      // This is a necessary compromise for wrapping nock's functionality
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+      (scope as any)[method] = function (path: string | RegExp, body?: unknown): any {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
+        const interceptor = originalMethod.call(this, path, body as any);
         const originalReply = interceptor.reply.bind(interceptor);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-function-return-type, @typescript-eslint/ban-ts-comment
-        interceptor.reply = function (...args: any[]) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error: reply typing is incompatible with our use-case here
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        interceptor.reply = function (...args: any[]): any {
+          // @ts-expect-error - Complex nock typing compatibility
           const result = originalReply.apply(this, args);
 
-          scope.on(
-            'replied',
-            (req: {
-              path: string;
-              query?: Record<string, string | string[]>;
-              headers?: Record<string, string>;
-              body?: unknown;
-            }) => {
-              const requestInfo: RequestInfo = {
-                method: method.toUpperCase(),
-                url: `${fullHost}${req.path}`,
-                path: req.path,
-                query: Object.fromEntries(new URL(req.path, fullHost).searchParams),
-                headers: req.headers ?? {},
-                body: req.body,
-                timestamp: new Date(),
-              };
+          scope.on('replied', (req: NockRepliedEvent) => {
+            const requestInfo: RequestInfo = {
+              method: method.toUpperCase(),
+              url: `${fullHost}${req.path}`,
+              path: req.path,
+              query: extractQueryParams(req.path, fullHost),
+              headers: req.headers ?? {},
+              body: req.body,
+              timestamp: new Date(),
+            };
 
-              const nockInterceptor: NockInterceptor = {
-                method: method.toUpperCase(),
-                path,
-                body,
-              };
+            const nockInterceptor: NockInterceptor = {
+              method: method.toUpperCase(),
+              path,
+              body,
+            };
 
-              const trackedRequest: TrackedRequest = {
-                ...requestInfo,
-                interceptor: nockInterceptor,
-                matched: true,
-              };
+            const trackedRequest: TrackedRequest = {
+              ...requestInfo,
+              interceptor: nockInterceptor,
+              matched: true,
+            };
 
-              requestTracker.addRequest(trackedRequest);
-            }
-          );
+            requestTracker.addRequest(trackedRequest);
+          });
 
           return result;
         };

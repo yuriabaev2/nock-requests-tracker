@@ -4,7 +4,7 @@
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](http://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A modern TypeScript package for tracking nock HTTP requests with minimal integration requirements. Track all your mocked HTTP requests and analyze them with detailed metadata including request variables, headers, timestamps, and more.
+A modern TypeScript package for tracking [nock](https://github.com/nock/nock) HTTP requests with minimal integration requirements. Track all your mocked HTTP requests and analyze them with detailed metadata including request variables, headers, timestamps, and more.
 
 ## ✨ Features
 
