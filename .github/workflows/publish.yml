@@ -1,28 +1,21 @@
 name: Publish to NPM
+run-name: Publish ${{ github.event.release.tag_name }}
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   publish:
+    name: Publish ${{ github.event.release.tag_name }}
     runs-on: ubuntu-latest
+    environment: npm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          
-      - name: Get latest tag
-        id: get_tag
-        run: |
-          git fetch --tags
-          TAG=$(git describe --tags --abbrev=0)
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          git checkout $TAG
-          
-      - name: Update workflow name
-        run: |
-          echo "::notice title=Publishing::Deploying tag ${{ steps.get_tag.outputs.tag }} to NPM"
+          ref: ${{ github.event.release.tag_name }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,9 +33,9 @@ jobs:
       - name: Verify package contents
         run: npm pack --dry-run
 
-      - name: "Publish to NPM (Tag: ${{ steps.get_tag.outputs.tag }})"
-        run: |
-          echo "Publishing version $(node -p "require('./package.json').version") from tag ${{ steps.get_tag.outputs.tag }}"
-          npm publish
+      - name: Publish to NPM
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "Publishing version $(node -p \"require('./package.json').version\") from tag ${GITHUB_REF}"
+          npm publish
